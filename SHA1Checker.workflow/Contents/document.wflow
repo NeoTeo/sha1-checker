@@ -51,7 +51,7 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>source</key>
-					<string>on run {input, parameters}		(* Your script goes here *)	set theData to (the clipboard as text)	display dialog "Expected SHA1:" default answer theData	set dlogText to text returned of result	do shell script "/usr/bin/openssl sha1 " &amp; quoted form of POSIX path of input	set hash to trimHash(result)	if hash is equal to dlogText then		display dialog "Successful match." buttons {"OK"} default button {"OK"}	else		display dialog "The file checksum " &amp; return &amp; hash &amp; " did not match " &amp; return &amp; dlogText &amp; return &amp; return &amp; "Check for extraneous characters (eg. spaces)" buttons {"OK"} with icon 0	end if			return resultend runon trimHash(hashString)	(*set cutPosition to (offset of "=" in hashString) + 2*)	set endPosition to (length of hashString)	set cutPosition to endPosition - 39		return text cutPosition thru endPosition of hashStringend trimHash</string>
+					<string>on run {input, parameters}		set failed to false	if (count of input) is greater than 1 then		display dialog "SHA1Checker does not work with multiple files." buttons {"OK"}		return	end if		set posixPath to quoted form of POSIX path of input	if isDirectory(posixPath) then		display dialog "SHA1Checker does not work with directories." buttons {"OK"}		return	end if		set theData to (the clipboard as text)	display dialog "Expected SHA1:" default answer theData	set dlogText to text returned of result	do shell script "/usr/bin/openssl sha1 " &amp; quoted form of POSIX path of input	set hash to trimHash(result)	if hash is equal to dlogText then		display dialog "Successful match." buttons {"OK"} default button {"OK"}	else		display dialog "The file checksum " &amp; return &amp; hash &amp; " did not match " &amp; return &amp; dlogText &amp; return &amp; return &amp; "Check for extraneous characters (eg. spaces)" buttons {"OK"} with icon 0	end if			return resultend runon trimHash(hashString)	(*set cutPosition to (offset of "=" in hashString) + 2*)	set endPosition to (length of hashString)	set cutPosition to endPosition - 39		return text cutPosition thru endPosition of hashStringend trimHashon isDirectory(filePosixPath) -- path is a posixpath		set fileType to (do shell script "file -b " &amp; filePosixPath)	if fileType ends with "directory" then return true	return falseend isDirectory</string>
 				</dict>
 				<key>BundleIdentifier</key>
 				<string>com.apple.Automator.RunScript</string>
@@ -102,12 +102,10 @@ end run</string>
 						<string>0</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:496.000000</string>
+				<string>309.000000:656.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run AppleScript.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
